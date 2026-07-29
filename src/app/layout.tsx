@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className="">
         <header className="fixed top-0 right-0 left-0 p-2 border-b text-center shadow-xl">
           <Link className="font-bold" href="/">

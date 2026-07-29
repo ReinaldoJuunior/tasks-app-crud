@@ -7,15 +7,15 @@ export default function Home() {
       <h1 className="text-4xl">Bem vindo!</h1>
       <p className="font-bold">Telas disponiveis</p>
 
-      <ul>
+      <ul className="list-disc ml-6 underline">
         <li>
-          <Link href="/"></Link>
+          <Link href="/register">Cadastro</Link>
         </li>
         <li>
-          <Link href="/"></Link>
+          <Link href="/login">Login</Link>
         </li>
         <li>
-          <Link href="/"></Link>
+          <Link href="/tasks">Tarefas</Link>
         </li>
       </ul>
     </div>
