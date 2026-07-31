@@ -2,14 +2,52 @@
 import FormRegister from "@/src/components/FormRegister";
 import Link from "next/link";
 
-
 export default function Cadastro() {
+  const handleRegister = async (formData: FormData) => {
 
+    "use server";
+    const username = formData.get("username")?.toString();
+    const email = formData.get("email")?.toString();
+    const password = formData.get("password")?.toString();
+
+    if (!username || !email || !password) {
+      console.error("Todos os campos são obrigatórios.");
+      return;
+    }
+
+    try{
+      const body = {
+        username,
+        email,
+        password
+      }
+
+      console.log(body, "passou aqui");
+      
+      const res = await fetch("http://127.0.0.1:4000/auth/register", {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("API:", res.status);
+      
+      const register = await res.json();
+      console.log(register.message, "passou aqui");
+    }
+    catch (error) {
+      console.error("Erro ao registrar:", error);
+    }
+  }
+
+    
   return (
     <div className="grid gap-y-4 px-8 min-w-100 py-12 bg-[#fdfcfc] rounded-3xl shadow-xl">
       <h1 className="text-center text-4xl font-bold">Cadastro</h1>
 
-      <FormRegister />
+      <FormRegister action={handleRegister} />
 
       <Link className="text-center underline" href="/login">
         Já tenho Cadastro

@@ -1,7 +1,11 @@
 "use client";
 import { useState } from "react";
 
-export default function FormRegister() {
+type FormRegisterProps = {
+  action: (formData: FormData) => void | Promise<void>;
+};
+
+export default function FormRegister({ action }: FormRegisterProps) {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -10,7 +14,7 @@ export default function FormRegister() {
 
   return (
 
-    <form className="grid gap-y-6">
+    <form className="grid gap-y-6" action={action} >
       <fieldset className="grid">
 
         <label className="text-[#7b7c7b]" htmlFor="username">Usuário</label>
