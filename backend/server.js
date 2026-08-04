@@ -58,17 +58,28 @@ const server = http.createServer(async (req, res) => {
     if (pathname === "/auth/register" && method === "POST") {
       const body = await readBody(req);
       const { username, email, password } = body;
-
       if (!username || !email || !password) {
         return sendJSON(res, 400, {
-          error: "username, email e password são obrigatórios",
+          error: "Todos os campos são obrigatórios.",
         });
       }
 
       const db = readDB();
-      const exists = db.users.find((u) => u.email === email);
+      const exists = db.users.find((u) => u.username === username);
       if (exists) {
-        return sendJSON(res, 409, { error: "E-mail já cadastrado" });
+        return sendJSON(res, 409, { error: "Usuário já cadastrado" });
+      }
+
+      if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/.test(email)) {
+        return sendJSON(res, 400, {
+          error: "Por favor, insira um email válido.",
+        });
+      }
+
+      if (password.length < 6) {
+        return sendJSON(res, 400, {
+          error: "A senha deve ter pelo menos 6 caracteres.",
+        });
       }
 
       const newUser = {
@@ -76,7 +87,6 @@ const server = http.createServer(async (req, res) => {
         username,
         email,
         password: hashPassword(password),
-        createdAt: new Date().toISOString(),
       };
 
       db.users.push(newUser);
@@ -97,6 +107,7 @@ const server = http.createServer(async (req, res) => {
       const user = db.users.find((u) => u.email === email);
 
       if (!user || !verifyPassword(password, user.password)) {
+        console.error("E-mail ou senha inválidos:", email);
         return sendJSON(res, 401, { error: "E-mail ou senha inválidos" });
       }
 
