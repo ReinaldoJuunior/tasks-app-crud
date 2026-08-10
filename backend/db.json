@@ -1,25 +1,5 @@
 {
   "users": [
-    {
-      "id": "86c8f009-64ac-4964-9925-532ffc3d1db2",
-      "username": "junior",
-      "email": "junior@gmail.com",
-      "password": "c43c3ea589788cd40d4251752cb4c174:9ac39ce1bd50ad181808278f715332fa911e90fea6674d64601df32ba6a19d1eeab744f48c3373238151b471cba6e90dc5683c8c52d80ca092822132618fb1f4",
-      "createdAt": "2026-07-31T20:27:01.677Z"
-    },
-    {
-      "id": "c67425a4-800b-40e5-bfbe-94f72aad4be9",
-      "username": "fake",
-      "email": "fake@gmail.com",
-      "password": "cb75b1fa2f0e7fb273eaa9db2aab9288:133b39703923cb1fdbe265d4a74d1c70ae9048b0a9877c4bcc2217e67f429c65875de6201f0312e23619400756b9a9dd4fa80f471d24730e54e7a0889cd62933",
-      "createdAt": "2026-07-31T20:31:52.375Z"
-    },
-    {
-      "id": "a2bb3a19-685a-49a0-b0a3-d870a5a13333",
-      "username": "reinaldojunior",
-      "email": "re046057@qintess.com",
-      "password": "e3cb23a249eb63c84104e6d9dfd90905:5cb6e8b8565fc5b8ff0a3d3dbcdb8c2afd38843f5a9a658c7e94799481a537db2e153c2e15c59b0e593edb9ddfb8d1d02022a9dc9b56e11353aa72b43ff05f39",
-      "createdAt": "2026-07-31T20:42:04.682Z"
-    }
+
   ]
 }

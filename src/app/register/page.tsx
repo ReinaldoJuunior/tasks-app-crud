@@ -1,5 +1,6 @@
 
-import FormRegister from "@/src/components/FormRegister";
+import { FormRegister } from "@/src/components/FormRegister";
+import { SignJWT } from "jose";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -21,17 +22,21 @@ export default function Cadastro() {
       const res = await fetch("http://127.0.0.1:4000/auth/register", {
         method: "POST",
         body: JSON.stringify(body),
-        headers: {
+        headers: { 
           "Content-Type": "application/json",
         },
       });
 
       console.log("HTTP STATUS:", res.status);
-      const register = await res.json();
-      console.log("API Response:", register);
-      if (!res.ok) {
-        // @todo? Logica de autenticação, caso o usuário já exista, ou caso o email já esteja em uso.
-        
+      const { token, message } = await res.json();
+      console.log("API Response:", { token, message });
+
+      if (!token) {
+        // @todo: Logica de autenticação, caso o usuário já exista, ou caso o email já esteja em uso.
+
+        return message;
+      } else {
+        console.log("Sucesso:", token);
       }
 
     } catch (error) {

@@ -1,5 +1,7 @@
 const http = require("http");
 const crypto = require("crypto");
+const { createSecretKey } = require("crypto");
+const { SignJWT } = require("jose");
 const { readDB, writeDB } = require("./db");
 const { hashPassword, verifyPassword } = require("./password");
 
@@ -92,9 +94,21 @@ const server = http.createServer(async (req, res) => {
       db.users.push(newUser);
       writeDB(db);
 
+      const secret = createSecretKey(Buffer.from(process.env.JWT_SECRET || "dev-secret", "utf8"));
+      const token = await new SignJWT({
+        sub: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      })
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("7d")
+        .sign(secret);
+
       return sendJSON(res, 201, {
         message: "Usuário registrado com sucesso",
         user: toPublicUser(newUser),
+        token,
       });
     }
 
