@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { checkInvalidEmail, checkInvalidPassword } from "@/src/lib/utils";
+import { COOKIE } from "@/src/constants/constants";
 
 const PAGE_TITLE = "Cadastro";
 
@@ -20,6 +22,18 @@ export default function Cadastro() {
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
 
+    if (!email || !password) {
+      return "Preencha todos os campos.";
+    }
+
+    if (!checkInvalidEmail(email)) {
+      return "E-mail inválido.";
+    }
+
+    if (!checkInvalidPassword(password)) {
+      return "A senha deve ter no mínimo 6 caracteres.";
+    }
+
     try {
       const body = {
         username,
@@ -27,10 +41,10 @@ export default function Cadastro() {
         password
       }
 
-      const res = await fetch("http://127.0.0.1:4000/auth/register", {
+      const res = await fetch(`${process.env.BACKEND_URL}/auth/register`, {
         method: "POST",
         body: JSON.stringify(body),
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
         },
       });
@@ -44,12 +58,7 @@ export default function Cadastro() {
       } else {
         // Logica de autenticação, caso o usuário já exista, ou caso o email já esteja em uso.
         const cookiesStore = await cookies();
-        cookiesStore.set("token", token, { 
-          httpOnly: true,
-          secure:true,
-          path: "/",
-          maxAge: 60 * 60 * 24
-         });
+        cookiesStore.set("token", token, COOKIE);
 
       }
 
@@ -63,7 +72,7 @@ export default function Cadastro() {
 
 
   return (
-    <div className="grid gap-y-4 px-8 min-w-100 py-12 bg-[#fdfcfc] rounded-3xl shadow-xl">
+    <>
       <h1 className="text-center text-4xl font-bold">{PAGE_TITLE}</h1>
 
       <FormRegister action={handleRegister} />
@@ -71,7 +80,7 @@ export default function Cadastro() {
       <Link className="text-center underline" href="/login">
         Já tenho Cadastro
       </Link>
-    </div>
+    </>
 
   );
 }

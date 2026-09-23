@@ -4,15 +4,15 @@ import { FormInput } from "./FormInput";
 import { FormButton } from "./FormButton";
 import { FormError } from "./FormError";
 
-type FormRegisterProps = {
+type FormLoginProps = {
   action: (_: string, formData: FormData) => Promise<string>;
 };
 
-export const FormRegister: FC<FormRegisterProps> = ({ action }) => {
+export const FormLogin: FC<FormLoginProps> = ({ action }) => {
 
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [errorMessage, formAction, isPending] = useActionState(action, "");
 
@@ -23,18 +23,10 @@ export const FormRegister: FC<FormRegisterProps> = ({ action }) => {
       <form className="grid gap-y-6" action={formAction} >
 
         <FormInput
-          id="username"
-          label="Usuário"
-          value={username}
-          setValue={setUsername}
-        />
-        <FormInput
           id="email"
           label="E-mail"
-          name="email"
           value={email}
           setValue={setEmail}
-          type="email"
         />
 
         <FormInput
@@ -46,7 +38,7 @@ export const FormRegister: FC<FormRegisterProps> = ({ action }) => {
           type="password"
         />
         <FormButton>
-          Cadastrar
+            Login
         </FormButton>
       </form>
     </>
