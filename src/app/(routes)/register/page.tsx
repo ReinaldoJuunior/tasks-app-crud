@@ -1,5 +1,5 @@
 
-import { FormRegister } from "@/src/components/FormRegister";
+import { FormRegister } from "@/src/components/forms/FormRegister";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 import Link from "next/link";

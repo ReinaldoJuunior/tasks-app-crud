@@ -1,8 +1,8 @@
 "use client";
 import { FC, useActionState, useState } from "react";
-import { FormInput } from "./FormInput";
-import { FormButton } from "./FormButton";
-import { FormError } from "./FormError";
+import { FormInput } from "../FormInput";
+import { FormButton } from "../FormButton";
+import { FormError } from "../FormError";
 
 type FormRegisterProps = {
   action: (_: string, formData: FormData) => Promise<string>;
@@ -13,7 +13,6 @@ export const FormRegister: FC<FormRegisterProps> = ({ action }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [errorMessage, formAction, isPending] = useActionState(action, "");
 
   return (
