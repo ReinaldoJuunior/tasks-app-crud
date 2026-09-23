@@ -6,7 +6,7 @@ interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
     setValue: Dispatch<SetStateAction<string>>;
 }
 
-export const FormInput: FC<FormInputProps> = ({ id, label, value, setValue }) => (
+export const FormInput: FC<FormInputProps> = ({ id, label, value, setValue, ...inputProps }) => (
         <fieldset className="grid">
             <label className="text-[#7b7c7b]" htmlFor={id}>
                 {label}
@@ -18,6 +18,7 @@ export const FormInput: FC<FormInputProps> = ({ id, label, value, setValue }) =>
                 name={id}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
+                {...inputProps}
                 />
         </fieldset>
 );

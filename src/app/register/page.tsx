@@ -1,8 +1,9 @@
 
 import { FormRegister } from "@/src/components/FormRegister";
 import { SignJWT } from "jose";
+import { cookies } from "next/headers";
 import Link from "next/link";
-import { redirect, RedirectType } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function Cadastro() {
   const handleRegister = async (_: string, formData: FormData) => {
@@ -32,17 +33,25 @@ export default function Cadastro() {
       console.log("API Response:", { token, message });
 
       if (!token) {
-        // @todo: Logica de autenticação, caso o usuário já exista, ou caso o email já esteja em uso.
-
         return message;
       } else {
-        console.log("Sucesso:", token);
+        // Logica de autenticação, caso o usuário já exista, ou caso o email já esteja em uso.
+        const cookiesStore = await cookies();
+        cookiesStore.set("token", token, { 
+          httpOnly: true,
+          secure:true,
+          path: "/",
+          maxAge: 60 * 60 * 24
+         });
+
       }
 
     } catch (error) {
-      return "Não foi possível conectar ao servidor. Tente novamente mais tarde.";
+      console.error("Handle Register failed.");
+      return "Erro de cadastro.";
     }
-    redirect("/tasks", RedirectType.replace);
+    redirect("/tasks");
+
   };
 
 
