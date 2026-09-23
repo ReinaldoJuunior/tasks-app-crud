@@ -4,6 +4,13 @@ import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+const PAGE_TITLE = "Cadastro";
+
+export const metadata: Metadata = {
+  title: PAGE_TITLE,
+};
 
 export default function Cadastro() {
   const handleRegister = async (_: string, formData: FormData) => {
@@ -57,7 +64,7 @@ export default function Cadastro() {
 
   return (
     <div className="grid gap-y-4 px-8 min-w-100 py-12 bg-[#fdfcfc] rounded-3xl shadow-xl">
-      <h1 className="text-center text-4xl font-bold">Cadastro</h1>
+      <h1 className="text-center text-4xl font-bold">{PAGE_TITLE}</h1>
 
       <FormRegister action={handleRegister} />
 

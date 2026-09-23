@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 
+const PAGE_TITLE = "Tasks APP";
+
 export const metadata: Metadata = {
-  title: "Tasks APP CRUD",
+  title: {default:PAGE_TITLE, template: `${PAGE_TITLE} | %s`},
 };
 
 export default function RootLayout({
