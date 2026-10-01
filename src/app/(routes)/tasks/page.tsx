@@ -1,8 +1,9 @@
 import { FormTasks } from "@/src/components/forms/FormTasks";
-import { COOKIE } from "@/src/constants/constants";
 import { fetchWithToken } from "@/src/lib/fetchWithToken";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+import { handleCompleteTask, handleCreateTask } from "./actions";
+import { TaskCard } from "@/src/components/TaskCard";
 
 const PAGE_TITLE = "Tarefas";
 
@@ -10,50 +11,49 @@ export const metadata: Metadata = {
   title: PAGE_TITLE,
 };
 
-export default function Tasks() {
+type TaskType = {
+  _id: string;
+  userId: string;
+  title: string;
+  completed: boolean;
+  deleted: boolean;
+  createDate: string;
+  modifyDate: string;
+  __v: 0;
+};
 
-  const handleCreateTask = async (_: string, formData: FormData) => {
+export default async function Tasks() {
 
-    "use server";
-    const task = formData.get("tasks")?.toString();
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("token")?.value;
 
-    if (!task) {
-      return " Informe o título da tarefa.";
+  if (!token) return null;
+  const { tasks }: { tasks: TaskType[] } = await fetchWithToken(
+    `${process.env.BACKEND_URL}/tasks`,
+    token,
+    {
+      next: {
+        tags: ["get-tasks"],
+      },
     }
-
-    try {
-      const body = {
-        title: task
-      }
-
-      const cookiesStore = await cookies();
-      const token = cookiesStore.get("token")?.value;
-
-      if (!token) {
-        return "Token não encontrado. Faça login novamente.";
-      } else {
-        const { message } = await fetchWithToken(`${process.env.BACKEND_URL}/tasks`, token, {
-          method: "POST",
-          body: JSON.stringify(body),
-        });
-        
-        return message;
-      }
-    } catch (error) {
-      console.error("Handle Create Task failed.");
-      return "Erro ao criar tarefa.";
-    }
-  };
+  );
 
   return (
     <>
       <h1 className="text-center text-4xl font-bold">{PAGE_TITLE}</h1>
       <FormTasks action={handleCreateTask} />
 
-      <ul>
-        <li>
-          tasks...
-        </li>
+      <ul className="grid gap-y-3">
+        {tasks.reverse().map((task) => (
+          <TaskCard 
+          key={task._id} 
+          id={task._id} 
+          completed={task.completed}
+          completeAction={handleCompleteTask}>
+            
+            {task.title}
+          </TaskCard>
+        ))}
       </ul>
     </>
   );
