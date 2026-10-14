@@ -2,7 +2,7 @@ import { FormTasks } from "@/src/components/forms/FormTasks";
 import { fetchWithToken } from "@/src/lib/fetchWithToken";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
-import { handleCompleteTask, handleCreateTask } from "./actions";
+import { handleCompleteTask, handleCreateTask, handleDeleteTask } from "./actions";
 import { TaskCard } from "@/src/components/TaskCard";
 
 const PAGE_TITLE = "Tarefas";
@@ -44,12 +44,13 @@ export default async function Tasks() {
       <FormTasks action={handleCreateTask} />
 
       <ul className="grid gap-y-3">
-        {tasks.reverse().map((task) => (
+        {tasks.reverse().sort((a, b) => (!a.completed && b.completed ? -1 : 1)).map((task) => (
           <TaskCard 
           key={task._id} 
           id={task._id} 
           completed={task.completed}
-          completeAction={handleCompleteTask}>
+          completeAction={handleCompleteTask}
+          deleteAction={handleDeleteTask}>
             
             {task.title}
           </TaskCard>

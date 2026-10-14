@@ -24,7 +24,7 @@ export default function RootLayout({
         
         <main className="mt-24 mb-14 flex justify-center">{children}</main>
 
-        <footer className="text-center">
+        <footer className="mb-14 text-center">
           <p className="text-sm">Projeto do curso Fundamentos front-end React</p>
           <p className="text-xs">2026</p>
         </footer>

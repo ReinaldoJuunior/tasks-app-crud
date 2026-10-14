@@ -29,7 +29,9 @@ export const handleCreateTask = async (_: string, formData: FormData) => {
             if (message) {
                 return message;
             }
-            revalidateTag("get-tasks", "max");
+            console.log("handleCreateTask success:", message);
+            console.log("Task body:", body);
+            revalidateTag("get-tasks", {expire: 0});
         }
     } catch (error) {
         console.error("Handle Create Task failed.");
@@ -46,10 +48,9 @@ export const handleCompleteTask = async (formData: FormData) => {
     }
 
     try {
-
         const cookieStore = await cookies();
         const token = cookieStore.get("token")?.value;
-
+        
         if (!token) {
             return "Token não encontrado. Faça login novamente.";
         } else {
@@ -61,10 +62,42 @@ export const handleCompleteTask = async (formData: FormData) => {
                 console.error("handleCompleteTask failed:", message);
                 return
             }
-            revalidateTag("get-tasks", "max");
+            revalidateTag("get-tasks", {expire: 0});
         }
     } catch (error) {
         console.error("handleCompleteTask failed.");
         return "Erro ao atualizar tarefa.";
+    }
+};
+
+export const handleDeleteTask = async (formData: FormData) => {
+    const id = formData.get("id")?.toString();
+
+    if (!id) {
+        console.error("Informe o ID da tarefa.")
+        return;
+    }
+
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token")?.value;
+        
+        if (!token) {
+            return "Token não encontrado. Faça login novamente.";
+        } else {
+            const { message } = await fetchWithToken(`${process.env.BACKEND_URL}/tasks/${id}`, token, {
+                method: "DELETE",
+            });
+
+            if (message) {
+                console.error("handleDeleteTask failed:", message);
+                return
+            }
+            revalidateTag("get-tasks", {expire: 0});
+            console.log("handleDeleteTask success:", message);
+        }
+    } catch (error) {
+        console.error("handleDeleteTask failed.");
+        return "Erro ao excluir tarefa.";
     }
 };
