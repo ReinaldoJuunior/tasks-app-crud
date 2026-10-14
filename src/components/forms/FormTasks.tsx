@@ -30,7 +30,9 @@ export const FormTasks: FC<FormTasksProps> = ({ action }) => {
         placeholder="Informe o título da tarefa"
          /> 
 
-         <button className="absolute top-0 right-0 bottom-0 px-3 bg-[#141516] text-white shadow-md rounded-r-lg cursor-pointer hover:shadow-none">+</button>
+         <button className="absolute top-0 right-0 bottom-0 px-3 bg-[#141516] text-white shadow-md rounded-r-lg cursor-pointer hover:shadow-none" disabled={isPending}>
+           +
+         </button>
       </form>
     </>
   );

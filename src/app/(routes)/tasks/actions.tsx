@@ -7,7 +7,7 @@ export const handleCreateTask = async (_: string, formData: FormData) => {
     const task = formData.get("tasks")?.toString();
 
     if (!task) {
-        return "Informe o título da tarefa.";
+        return "Necessário informar o título da tarefa.";
     }
 
     try {
