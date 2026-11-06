@@ -1,0 +1,11 @@
+{
+  "name": "backend-cadastro",
+  "version": "1.0.0",
+  "description": "Backend simples de cadastro de usuarios (CRUD) - sem dependencias externas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "MIT"
+}
